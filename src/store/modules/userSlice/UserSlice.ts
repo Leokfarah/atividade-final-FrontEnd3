@@ -1,12 +1,11 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { Recados } from "../recadosSlice/RecadosSlice";
 
-
 export interface User {
     email: string,
     senha: string,
     recados: Recados[],
-}
+};
 
 const adapter = createEntityAdapter<User>({
     selectId: (user) => user.email,

@@ -73,7 +73,6 @@ export const Cadastro = () => {
         limparCampos();
         alert('Usuário cadastrado com sucesso!');
         navegaLogin();
-
     }
 
     function cadastraUsuario() {
@@ -107,21 +106,21 @@ export const Cadastro = () => {
                     />
 
                     <MeuInput
-                        label='E-mail' type='email'
+                        label='E-mail' type='email' variant='standard'
                         placeholder='E-mail' color='primary'
                         size='medium' value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
                     <MeuInput
-                        label='Senha' type='password'
+                        label='Senha' type='password' variant='standard'
                         placeholder='Senha' color='primary'
                         size='medium' value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
                     <MeuInput
-                        label='Repetir Senha' type='password'
+                        label='Repetir Senha' type='password' variant='standard'
                         placeholder='Repetir Senha' color='primary'
                         size='medium' value={rePassword}
                         onChange={(e) => setRePassword(e.target.value)}

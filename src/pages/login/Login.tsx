@@ -88,14 +88,14 @@ export const Login = () => {
                     />
 
                     <MeuInput
-                        label='E-mail' type='email'
+                        label='E-mail' type='email' variant='standard'
                         placeholder='E-mail' color='primary'
                         size='medium' value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
                     <MeuInput
-                        label='Senha' type='password'
+                        label='Senha' type='password' variant='standard'
                         placeholder='Senha' color='primary'
                         size='medium' value={password}
                         onChange={(e) => setPassword(e.target.value)}
