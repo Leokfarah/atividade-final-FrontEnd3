@@ -71,7 +71,7 @@ export const Login = () => {
     }
 
     function navegaRecados() {
-        return navigate('/Recados')
+        return navigate('/recados')
     }
 
     function navegaCadastro() {
