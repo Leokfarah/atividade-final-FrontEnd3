@@ -1,3 +1,4 @@
+import React from 'react';
 import { createTheme } from '@mui/material';
 import { ptBR } from '@mui/material/locale';
 

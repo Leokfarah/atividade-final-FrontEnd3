@@ -5,8 +5,8 @@ import { MeuInput } from '../../components/meuinput/MeuInput';
 import { MeuBotao } from '../../components/meubotao/MeuBotao';
 import { MeuTitulo } from '../../components/titulo/Titulo';
 import { useNavigate } from 'react-router-dom';
-import { selectAll, User } from '../../store/modules/userSlice/UserSlice';
 import { useAppDispatch, useAppSelector } from '../../store/modules/hooks';
+import { selectAll, User } from '../../store/modules/userSlice/UserSlice';
 
 const MeuContainer = styled(Grid)(() => ({
     display: 'flex',
@@ -34,9 +34,9 @@ export const Login = () => {
     const estaLogado: string = localStorage.getItem('usuarioLogado') || '';
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const navigate = useNavigate();
     const cadastrados = useAppSelector(selectAll);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
 

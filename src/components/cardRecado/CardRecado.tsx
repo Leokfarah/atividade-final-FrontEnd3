@@ -4,9 +4,14 @@ import {
     Card, CardActions, CardContent, Grid, Typography,
 } from "@mui/material";
 import { MeuBotao } from '../meubotao/MeuBotao';
+import { useAppDispatch, useAppSelector } from '../../store/modules/hooks';
+import { selectAll } from '../../store/modules/recadosSlice/RecadosSlice';
 
 export const CardRecado = () => {
     const [open, setOpen] = React.useState(false);
+    const recados = useAppSelector(selectAll);
+    const dispatch = useAppDispatch();
+
 
     const handleClickOpen = () => {
         setOpen(true);

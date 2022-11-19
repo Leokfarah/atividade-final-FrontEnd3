@@ -5,11 +5,14 @@ export interface Recados {
     descricao: string,
     data: string,
     uid: string,
+    userId: string;
 }
 
 const adapter = createEntityAdapter<Recados>({
     selectId: (recados) => recados.uid,
 });
+
+
 
 export const { selectAll, selectById } = adapter.getSelectors((state: any) => state.recados);
 
