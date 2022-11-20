@@ -98,7 +98,6 @@ export const HeaderRecados = () => {
                         margin="dense"
                         id="data"
                         type="date"
-                        fullWidth
                         variant="standard"
                         sx={{ mt: 2 }}
                         onChange={((e) => setData(e.target.value))}

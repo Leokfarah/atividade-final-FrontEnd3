@@ -103,7 +103,6 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
                         margin="dense"
                         id="data"
                         type="date"
-                        fullWidth
                         variant="standard"
                         sx={{ mt: 2 }}
                         onChange={((e) => setNewDate(e.target.value))}
