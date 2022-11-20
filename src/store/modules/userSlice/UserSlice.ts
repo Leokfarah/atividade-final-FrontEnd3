@@ -1,6 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
-
 export interface User {
     email: string,
     senha: string,

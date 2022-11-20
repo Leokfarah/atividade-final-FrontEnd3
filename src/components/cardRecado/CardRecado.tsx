@@ -4,12 +4,15 @@ import {
     Card, CardActions, CardContent, Grid, Typography,
 } from "@mui/material";
 import { MeuBotao } from '../meubotao/MeuBotao';
-import { useAppDispatch, useAppSelector } from '../../store/modules/hooks';
-import { selectAll } from '../../store/modules/recadosSlice/RecadosSlice';
+import { useAppDispatch } from '../../store/modules/hooks';
+import { atualizarRecado, Recados, removerRecado, selectAll, selectById } from '../../store/modules/recadosSlice/RecadosSlice';
 
-export const CardRecado = () => {
+export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) => {
     const [open, setOpen] = React.useState(false);
-    const recados = useAppSelector(selectAll);
+    const [newTarefa, setNewTarefa] = React.useState('')
+    const [newDescricao, setNewDescricao] = React.useState('')
+    const [newDate, setNewDate] = React.useState('');
+
     const dispatch = useAppDispatch();
 
 
@@ -21,20 +24,29 @@ export const CardRecado = () => {
         setOpen(false);
     };
 
+    const updateRecado = () => {
+        dispatch(atualizarRecado({ id: uid, changes: { tarefa: newTarefa, descricao: newDescricao, data: newDate } }));
+        handleClose()
+    }
+
+    const deleteRecado = () => {
+        dispatch(removerRecado(uid))
+    }
+
     return (
         <Card sx={{ minWidth: 200 }} elevation={5}>
             <CardContent>
 
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    15/11/2022
+                    {data}
                 </Typography>
 
                 <Typography variant="h5" component="div">
-                    Nome do Recado
+                    {tarefa}
                 </Typography>
 
                 <Typography variant="body2" marginTop={1} textAlign="justify">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut amet provident unde cumque consequuntur officiis iure quas inventore
+                    {descricao}
                 </Typography>
 
             </CardContent>
@@ -52,6 +64,7 @@ export const CardRecado = () => {
                         onClick={() => {
                             if (window.confirm('Tem certeza que deseja excluir este recado?')) {
                                 console.log('recado deletado')
+                                deleteRecado()
                             }
                         }}
                     />
@@ -59,16 +72,18 @@ export const CardRecado = () => {
             </CardActions>
 
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Novo Recado</DialogTitle>
+                <DialogTitle>Editar Recado</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
                         id="tarefa"
-                        label="Tarefa"
+                        label='Tarefa'
+                        placeholder={tarefa}
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={((e) => setNewTarefa(e.target.value))}
                     />
 
                     <TextField
@@ -76,9 +91,11 @@ export const CardRecado = () => {
                         margin="dense"
                         id="descricao"
                         label="Descrição"
+                        placeholder={descricao}
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={((e) => setNewDescricao(e.target.value))}
                     />
 
                     <TextField
@@ -89,6 +106,7 @@ export const CardRecado = () => {
                         fullWidth
                         variant="standard"
                         sx={{ mt: 2 }}
+                        onChange={((e) => setNewDate(e.target.value))}
                     />
                 </DialogContent>
 
@@ -100,13 +118,13 @@ export const CardRecado = () => {
                     />
 
                     <MeuBotao
-                        texto='Adicionar' color='success'
+                        texto='Atualizar' color='success'
                         size='small' variant='text'
-                        onClick={handleClose}
+                        onClick={updateRecado}
                     />
 
                 </DialogActions>
             </Dialog>
         </Card>
     );
-}
+};

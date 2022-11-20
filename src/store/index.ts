@@ -12,13 +12,12 @@ const persistedReducer = persistReducer(persistConfig, RootReducer);
 
 export const store = configureStore({
     reducer: persistedReducer,
-    // middleware: (getDefaultMiddleware) =>
-    // getDefaultMiddleware({
-    //     serializableCheck: {
-    //         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    //     },
-    // }),
-
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

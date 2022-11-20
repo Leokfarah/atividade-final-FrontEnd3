@@ -30,6 +30,7 @@ export const HeaderRecados = () => {
             };
 
             dispatch(adicionarRecado(novoRecado))
+            handleClose()
         }
     };
 

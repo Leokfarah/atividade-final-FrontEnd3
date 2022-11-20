@@ -1,28 +1,32 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 export interface Recados {
+    uid: string,
+    userId: string;
     tarefa: string,
     descricao: string,
     data: string,
-    uid: string,
-    userId: string;
-}
+};
 
-const adapter = createEntityAdapter<Recados>({
+// const adapter = createEntityAdapter<Recados>({
+//     selectId: (recados) => recados.userId,
+// });
+
+const editAdapter = createEntityAdapter<Recados>({
     selectId: (recados) => recados.uid,
 });
 
+// export const { selectAll } = adapter.getSelectors((state: any) => state.recados);
 
-
-export const { selectAll, selectById } = adapter.getSelectors((state: any) => state.recados);
+export const { selectAll, selectById } = editAdapter.getSelectors((state: any) => state.recados);
 
 const slice = createSlice({
     name: "recados",
-    initialState: adapter.getInitialState(),
+    initialState: editAdapter.getInitialState(),
     reducers: {
-        adicionarRecado: adapter.addOne,
-        atualizarRecado: adapter.updateOne,
-        removerRecado: adapter.removeOne,
+        adicionarRecado: editAdapter.addOne,
+        atualizarRecado: editAdapter.updateOne,
+        removerRecado: editAdapter.removeOne,
     },
 });
 

@@ -40,7 +40,7 @@ export const Cadastro = () => {
     const dispatch = useAppDispatch();
 
 
-    function CadastrarClick() {
+    const CadastrarClick = () => {
         if (!email) {
             alert('Digite um email válido!')
             return
@@ -79,7 +79,6 @@ export const Cadastro = () => {
         const novoUsuario = {
             email: email,
             senha: password,
-            recados: [],
         }
 
         dispatch(adicionarUser(novoUsuario))
