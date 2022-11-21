@@ -12,7 +12,6 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
     const [newTarefa, setNewTarefa] = React.useState('')
     const [newDescricao, setNewDescricao] = React.useState('')
     const [newDate, setNewDate] = React.useState('');
-
     const dispatch = useAppDispatch();
 
 

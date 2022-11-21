@@ -35,7 +35,6 @@ export const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const cadastrados = useAppSelector(selectAll);
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -48,7 +47,7 @@ export const Login = () => {
 
     }, []);
 
-    function logarClick() {
+    const logarClick = () => {
         if (!email) {
             alert('Digite um email válido!')
             return

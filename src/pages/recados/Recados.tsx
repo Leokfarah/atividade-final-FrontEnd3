@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Grid, Paper, } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { HeaderRecados } from '../../components/headerRecados/HeaderRecados';
 import { useNavigate } from 'react-router-dom';
 import { CardRecado } from '../../components/cardRecado/CardRecado';
-import { Recados, selectAll } from '../../store/modules/recadosSlice/RecadosSlice';
+import { selectAll } from '../../store/modules/recadosSlice/RecadosSlice';
 import { useAppSelector } from '../../store/modules/hooks';
 
 const MeuContainer = styled(Grid)(() => ({
@@ -21,6 +21,7 @@ const MeuContainer = styled(Grid)(() => ({
 export const PageRecados = () => {
     const estaLogado: string = localStorage.getItem('usuarioLogado') || '';
     const recados = useAppSelector(selectAll);
+    const recadosUsuarioLogado = recados.filter((recado) => recado.userId === estaLogado);
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -37,9 +38,12 @@ export const PageRecados = () => {
 
             <Grid item xs={12} md={11} sx={{ mt: 3 }}>
                 <Grid container spacing={3} >
-                    {recados.map((recados) => (
+                    {recadosUsuarioLogado.map((recados) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                            <CardRecado uid={recados.uid} userId={recados.userId} tarefa={recados.tarefa} descricao={recados.descricao} data={recados.data} />
+                            <CardRecado uid={recados.uid} userId={recados.userId}
+                                tarefa={recados.tarefa} descricao={recados.descricao}
+                                data={recados.data} key={recados.uid}
+                            />
                         </Grid>
                     ))}
                 </Grid>
