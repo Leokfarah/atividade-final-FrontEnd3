@@ -5,13 +5,15 @@ import {
 } from "@mui/material";
 import { MeuBotao } from '../meubotao/MeuBotao';
 import { useAppDispatch } from '../../store/modules/hooks';
-import { atualizarRecado, Recados, removerRecado, selectAll, selectById } from '../../store/modules/recadosSlice/RecadosSlice';
+import { atualizarRecado, Recados, removerRecado, } from '../../store/modules/recadosSlice/RecadosSlice';
+import { MeuAlert } from '../meuAlert/MeuAlert';
 
 export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) => {
     const [open, setOpen] = React.useState(false);
-    const [newTarefa, setNewTarefa] = React.useState('')
-    const [newDescricao, setNewDescricao] = React.useState('')
+    const [newTarefa, setNewTarefa] = React.useState('');
+    const [newDescricao, setNewDescricao] = React.useState('');
     const [newDate, setNewDate] = React.useState('');
+    const [alerta, setAlerta] = React.useState(false);
     const dispatch = useAppDispatch();
 
 
@@ -24,12 +26,24 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
     };
 
     const updateRecado = () => {
+        if (!newDescricao && !newTarefa) {
+            alertaRecados();
+            return
+        }
         dispatch(atualizarRecado({ id: uid, changes: { tarefa: newTarefa, descricao: newDescricao, data: newDate } }));
-        handleClose()
+        handleClose();
     }
 
     const deleteRecado = () => {
-        dispatch(removerRecado(uid))
+        dispatch(removerRecado(uid));
+    }
+
+    const alertaRecados = () => {
+        setAlerta(true);
+
+        setTimeout(() => {
+            setAlerta(false)
+        }, 4000);
     }
 
     return (
@@ -62,7 +76,7 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
                         size='small' variant='contained'
                         onClick={() => {
                             if (window.confirm('ALERTA DO SISTEMA: \n Tem certeza que deseja excluir este recado?')) {
-                                deleteRecado()
+                                deleteRecado();
                             }
                         }}
                     />
@@ -71,6 +85,11 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Editar Recado</DialogTitle>
+
+                {alerta && <MeuAlert titulo='Erro ao editar recado'
+                    mensagem='Você deve digitar a tarefa e descrição' severity='warning'
+                />}
+
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -121,6 +140,7 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
                     />
 
                 </DialogActions>
+
             </Dialog>
         </Card>
     );

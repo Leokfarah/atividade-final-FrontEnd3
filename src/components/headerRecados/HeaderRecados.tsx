@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from '../../store/modules/hooks';
 import { adicionarRecado } from '../../store/modules/recadosSlice/RecadosSlice';
 import { v4 as uuidv4 } from "uuid";
+import { MeuAlert } from '../meuAlert/MeuAlert';
 
 export const HeaderRecados = () => {
     const navigate = useNavigate();
@@ -15,12 +16,17 @@ export const HeaderRecados = () => {
     const [tarefa, setTarefa] = React.useState('');
     const [descricao, setDescricao] = React.useState('');
     const [data, setData] = React.useState('');
+    const [alerta, setAlerta] = React.useState(false);
     const dispatch = useAppDispatch();
 
     const addRecado = () => {
         const userLogado = localStorage.getItem('usuarioLogado');
 
         if (userLogado) {
+            if (!descricao && !tarefa) {
+                meuAlerta();
+                return
+            }
             const novoRecado = {
                 uid: uuidv4(),
                 userId: userLogado,
@@ -29,10 +35,17 @@ export const HeaderRecados = () => {
                 data: data,
             };
 
-            dispatch(adicionarRecado(novoRecado))
-            handleClose()
+            dispatch(adicionarRecado(novoRecado));
+            limparEstados();
+            handleClose();
         }
     };
+
+    const limparEstados = () => {
+        setTarefa('');
+        setDescricao('');
+        setData('');
+    }
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -42,13 +55,21 @@ export const HeaderRecados = () => {
         setOpen(false);
     };
 
+    const meuAlerta = () => {
+        setAlerta(true);
+
+        setTimeout(() => {
+            setAlerta(false);
+        }, 4000);
+    }
+
     function deslogar() {
-        localStorage.removeItem('usuarioLogado')
-        return navigate('/')
+        localStorage.removeItem('usuarioLogado');
+        return navigate('/');
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, boxShadow: '0 0 20px 1px white' }}>
             <AppBar position="static">
                 <Toolbar>
 
@@ -70,6 +91,11 @@ export const HeaderRecados = () => {
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Novo Recado</DialogTitle>
+
+                {alerta && <MeuAlert titulo='Erro ao criar recado'
+                    mensagem='Você deve digitar a tarefa e descrição' severity='warning'
+                />}
+
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -105,8 +131,8 @@ export const HeaderRecados = () => {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={addRecado}>Adicionar</Button>
+                    <Button onClick={handleClose} color='warning'>Cancelar</Button>
+                    <Button onClick={addRecado} color='success'>Adicionar</Button>
                 </DialogActions>
             </Dialog>
         </Box>

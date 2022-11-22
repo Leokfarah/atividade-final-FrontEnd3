@@ -13,7 +13,7 @@ const MeuContainer = styled(Grid)(() => ({
     alignContent: 'flex-start',
     width: '100vw',
     height: '100vh',
-    backgroundImage: 'url(https://i.imgur.com/3Ojge6Y.jpeg)',
+    backgroundImage: 'url(https://images2.alphacoders.com/163/163710.jpg)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
 }));

@@ -7,6 +7,7 @@ import { MeuInput } from '../../components/meuinput/MeuInput';
 import { MeuBotao } from '../../components/meubotao/MeuBotao';
 import { adicionarUser, selectAll } from '../../store/modules/userSlice/UserSlice';
 import { useAppDispatch, useAppSelector } from '../../store/modules/hooks';
+import { AlertProps, MeuAlert } from '../../components/meuAlert/MeuAlert';
 
 
 const MeuContainer = styled(Grid)(() => ({
@@ -32,9 +33,13 @@ const MeuPaper = styled(Paper)(() => ({
 }));
 
 export const Cadastro = () => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [rePassword, setRePassword] = useState<string>("");
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [rePassword, setRePassword] = useState<string>('');
+    const [alerta, setAlerta] = useState(false);
+    const [severidadeAlerta, setSeveridadeAlerta] = useState<AlertProps["severity"]>('error');
+    const [tituloAlerta, setTituloAlerta] = useState<string>('');
+    const [mensagemAlerta, setMensagemAlerta] = useState<string>('');
     const navigate = useNavigate();
     const usuarios = useAppSelector(selectAll);
     const dispatch = useAppDispatch();
@@ -42,37 +47,59 @@ export const Cadastro = () => {
 
     const CadastrarClick = () => {
         if (!email) {
-            alert('Digite um email válido!')
+            setSeveridadeAlerta('error');
+            setTituloAlerta('Erro ao cadastrar');
+            setMensagemAlerta('Digite um email');
+            AlertaCadastro();
             return
         }
 
         if (!password) {
-            alert('Digite uma senha válida!')
+            setSeveridadeAlerta('error');
+            setTituloAlerta('Erro ao cadastrar');
+            setMensagemAlerta('Digite uma senha');
+            AlertaCadastro();
             return
         }
 
         if (password !== rePassword) {
-            alert('As senhas não conferem!')
+            setSeveridadeAlerta('warning');
+            setTituloAlerta('Erro ao cadastrar');
+            setMensagemAlerta('As senhas não conferem');
+            AlertaCadastro();
             return
         }
 
         if (!email.match(/\S+@\S+\.\S/)) {
-            alert('Digite um email válido!')
+            setSeveridadeAlerta('warning');
+            setTituloAlerta('Erro ao cadastrar');
+            setMensagemAlerta('Digite um email válido ( usuario@email.com )');
+            AlertaCadastro();
             return
         }
 
-        const existeEmail = usuarios.some((usuarios) => usuarios.email === email)
+        const existeEmail = usuarios.some((usuarios) => usuarios.email === email);
 
         if (existeEmail) {
-            alert('Usuário já cadastrado!')
+            setSeveridadeAlerta('warning');
+            setTituloAlerta('Erro ao cadastrar');
+            setMensagemAlerta('Usuário já cadastrado');
+            AlertaCadastro();
             limparCampos();
             return
         }
 
         cadastraUsuario();
         limparCampos();
-        alert('Usuário cadastrado com sucesso!');
-        navegaLogin();
+        setSeveridadeAlerta('success');
+        setTituloAlerta('Usuário cadastrado com sucesso');
+        setMensagemAlerta(`${email} Seja bem vindo ao recado Caveira`);
+        AlertaCadastro();
+
+        setTimeout(() => {
+            navegaLogin();
+        }, 3200);
+
     }
 
     function cadastraUsuario() {
@@ -81,7 +108,7 @@ export const Cadastro = () => {
             senha: password,
         }
 
-        dispatch(adicionarUser(novoUsuario))
+        dispatch(adicionarUser(novoUsuario));
     }
 
     function limparCampos() {
@@ -90,54 +117,67 @@ export const Cadastro = () => {
         setRePassword('');
     }
 
+    const AlertaCadastro = () => {
+        setAlerta(true);
+
+        setTimeout(() => {
+            setAlerta(false)
+        }, 3000);
+    }
 
     function navegaLogin() {
         return navigate('/');
     }
 
     return (
-        <MeuContainer container xs={12}>
-            <Grid item xs={8} md={4}>
-                <MeuPaper elevation={24}>
-                    <MeuTitulo
-                        variant='h4' align='center'
-                        texto='Crie sua Conta'
-                    />
+        <>
+            {alerta && <MeuAlert titulo={tituloAlerta}
+                mensagem={mensagemAlerta} severity={severidadeAlerta}
+            />}
 
-                    <MeuInput
-                        label='E-mail' type='email' variant='standard'
-                        placeholder='E-mail' color='primary'
-                        size='medium' value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+            <MeuContainer container xs={12}>
+                <Grid item xs={8} md={4}>
+                    <MeuPaper elevation={24}>
+                        <MeuTitulo
+                            variant='h4' align='center'
+                            texto='Crie sua Conta'
+                        />
 
-                    <MeuInput
-                        label='Senha' type='password' variant='standard'
-                        placeholder='Senha' color='primary'
-                        size='medium' value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                        <MeuInput
+                            label='E-mail' type='email' variant='standard'
+                            placeholder='E-mail' color='primary'
+                            size='medium' value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
 
-                    <MeuInput
-                        label='Repetir Senha' type='password' variant='standard'
-                        placeholder='Repetir Senha' color='primary'
-                        size='medium' value={rePassword}
-                        onChange={(e) => setRePassword(e.target.value)}
-                    />
+                        <MeuInput
+                            label='Senha' type='password' variant='standard'
+                            placeholder='Senha' color='primary'
+                            size='medium' value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
 
-                    <MeuBotao
-                        texto='Cadastrar' color='primary'
-                        size='medium' variant='outlined'
-                        onClick={CadastrarClick}
-                    />
+                        <MeuInput
+                            label='Repetir Senha' type='password' variant='standard'
+                            placeholder='Repetir Senha' color='primary'
+                            size='medium' value={rePassword}
+                            onChange={(e) => setRePassword(e.target.value)}
+                        />
 
-                    <MeuBotao
-                        texto='Já possui conta?' color='info'
-                        size='small' variant='text'
-                        onClick={navegaLogin}
-                    />
-                </MeuPaper>
-            </Grid>
-        </MeuContainer>
+                        <MeuBotao
+                            texto='Cadastrar' color='primary'
+                            size='medium' variant='outlined'
+                            onClick={CadastrarClick}
+                        />
+
+                        <MeuBotao
+                            texto='Já possui conta?' color='info'
+                            size='small' variant='text'
+                            onClick={navegaLogin}
+                        />
+                    </MeuPaper>
+                </Grid>
+            </MeuContainer>
+        </>
     );
 };
