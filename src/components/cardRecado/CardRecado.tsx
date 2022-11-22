@@ -61,8 +61,7 @@ export const CardRecado = ({ uid, userId, tarefa, descricao, data }: Recados) =>
                     <MeuBotao texto='deletar' color='error'
                         size='small' variant='contained'
                         onClick={() => {
-                            if (window.confirm('Tem certeza que deseja excluir este recado?')) {
-                                console.log('recado deletado')
+                            if (window.confirm('ALERTA DO SISTEMA: \n Tem certeza que deseja excluir este recado?')) {
                                 deleteRecado()
                             }
                         }}
